@@ -1,0 +1,25 @@
+.material-icons.md-60 { font-size: 60px; }
+.bag-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-column-gap: 20px;
+    border-radius: 5px; /* 5px rounded corners */
+    margin: 30px;
+    padding: 10px;
+}
+
+#opened-mail {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+}
+
+#unopened-mail {
+    padding: 10px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(5, 1fr);
+    background: #ffffff;
+}
+

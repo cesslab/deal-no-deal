@@ -1,0 +1,53 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block app_styles %}
+    <link rel="stylesheet" href="{% static 'exp/envelope.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Random Envelope Selection
+{% endblock %}
+
+{% block content %}
+    <div>
+    <p>Opened envelope this round contained the probability <strong>{{ envelope }}%</strong>.</p>
+    </div>
+    <div class="bag-container">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Envelopes Opened</h5>
+            </div>
+            <div class="card-body">
+                <div id="opened-mail">
+                    {% for o in opened %}
+                        <div class="card">
+                            <span class="btn btn-outline-secondary">{{ o }}%</span>
+                        </div>
+                    {% endfor %}
+                    <div class="card">
+                        <span class="btn btn-secondary">{{ envelope }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Envelopes Remaining</h5>
+            </div>
+            <div class="card-body">
+                <div id="unopened-mail">
+                    {% for e in unopened %}
+                        <span class="btn btn-outline-secondary">&nbsp;</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% next_button %}
+{% endblock %}
+
+
