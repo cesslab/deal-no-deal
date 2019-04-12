@@ -13,11 +13,25 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     {
-       'name': 'public_goods',
+       'name': 'dnd_with_probabilities',
        'display_name': "Deal or No Deal",
        'num_demo_participants': 1,
        'app_sequence': ['exp'],
-       'envelopes': '10',
+       'random_envelopes_enabled': False,
+       'probability_treatment': True,
+       'prize': 100,
+       'envelope_1': 10,
+       'envelope_2': 20,
+       'envelope_3': 30,
+       'envelope_4': 40,
+       'envelope_5': 50,
+       'envelope_6': 60,
+       'envelope_7': 70,
+       'envelope_8': 80,
+       'envelope_9': 90,
+       'envelope_10': 100,
+       'buyout_min': 0,
+       'buyout_max': 100,
     },
 ]
 

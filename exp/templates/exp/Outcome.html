@@ -1,13 +1,47 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
+{% block app_styles %}
+    <link rel="stylesheet" href="{% static 'exp/envelope.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+{% endblock %}
+
 {% block title %}
     Outcome
 {% endblock %}
 
 {% block content %}
-
+    <div>
+        <p>Round {{ random_round }} was selected. In which you had the following envelopes remaining.</p>
+    </div>
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Envelopes Remaining</h5>
+            </div>
+            <div class="card-body">
+                <div id="unopened-mail">
+                    {% for e in unopened %}
+                        <span class="btn btn-outline-secondary">&nbsp;</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p>Envelope {{ random_envelope_id }} was selected at random.</p>
+        {% if probability_treatment %}
+        <p>The probability in the envelope was {{ envelope_value }}%.
+        </p>
+            {% if outcome_payoff > 0 %}
+                <p>The number {{ r }} was drawn at random which is less than or equal to {{ envelope_value }}.
+                <p><b>You received the prize of {{ outcome_payoff  }}</b>.</p>
+            {% else %}
+                <p>The number {{ r }} was drawn at random which is greater than {{ envelope_value }}.
+                <p><b>You did not win the prize.</b></p>
+            {% endif %}
+        {% endif %}
+    </div>
     {% next_button %}
 {% endblock %}
-
-
