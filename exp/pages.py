@@ -14,10 +14,32 @@ class EnvelopeSelection(Page):
         return not self.participant.vars["leave"]
 
     def vars_for_template(self):
+        labels = self.participant.vars['envelope_labels']
+        unopened_labels = sorted(labels[self.round_number:])
+        opened_labels = labels[:self.round_number-1]
+        opened_values = self.participant.vars['values'][:self.round_number-1]
+
+        unopened_envelopes = []
+        opened_envelopes = []
+        for i in range(0, len(unopened_labels)):
+            unopened_envelopes.append({
+                'label': unopened_labels[i],
+            })
+
+        for i in range(0, len(opened_labels)):
+            opened_envelopes.append({
+                'label': opened_labels[i],
+                'value': opened_values[i]
+            })
+
+        envelope = {
+            'label': labels[self.round_number-1],
+            'value': self.participant.vars['values'][self.round_number-1]
+        }
         return {
-            'unopened': self.participant.vars['values'][self.round_number:],
-            'envelope': self.participant.vars['values'][self.round_number-1],
-            'opened': self.participant.vars['values'][:self.round_number-1]
+            'unopened': unopened_envelopes,
+            'opened': opened_envelopes,
+            'envelope': envelope,
         }
 
 
@@ -73,17 +95,22 @@ class Outcome(Page):
         return self.round_number == Constants.num_rounds
 
     def vars_for_template(self):
-        random_round = self.participant.vars['random_round']
+        payoff_envelope = self.participant.vars['payoff_envelope']
+        labels = self.participant.vars['envelope_labels']
+        unopened_labels = sorted(labels[payoff_envelope['round']:])
+
+        unopened_envelopes = []
+        for i in range(0, len(unopened_labels)):
+            unopened_envelopes.append({
+                'label': unopened_labels[i],
+            })
+
         return {
-            'unopened': self.participant.vars['values'][random_round:],
-            'remaining': len(self.participant.vars['values'][random_round:]),
-            'random_round': random_round,
-            'random_envelope_id': self.participant.vars['random_envelope_id'],
-            'envelope_value': self.participant.vars['envelope_value'],
+            'unopened': unopened_envelopes,
+            'envelope': payoff_envelope,
             'probability_treatment': self.session.config['probability_treatment'],
             'r': self.participant.vars['r'],
             'outcome_payoff': self.participant.vars['outcome_payoff']
-
         }
 
 

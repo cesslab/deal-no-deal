@@ -13,7 +13,7 @@
 
 {% block content %}
     <div>
-    <p>Opened envelope this round contained the probability <strong>{{ envelope }}%</strong>.</p>
+        <p>Envelope <strong>{{ envelope.label }}</strong> was opened in this round, and it contained the probability <strong>{{ envelope.value }}%</strong>.</p>
     </div>
     <div class="bag-container">
         <div class="card">
@@ -24,11 +24,11 @@
                 <div id="opened-mail">
                     {% for o in opened %}
                         <div class="card">
-                            <span class="btn btn-outline-secondary">{{ o }}%</span>
+                            <span class="btn btn-outline-secondary">{{ o.label }}: {{ o.value }}%</span>
                         </div>
                     {% endfor %}
                     <div class="card">
-                        <span class="btn btn-secondary">{{ envelope }}%</span>
+                        <span class="envelope btn btn-secondary text-center">{{ envelope.label }}: {{ envelope.value }}%</span>
                     </div>
                 </div>
             </div>
@@ -40,8 +40,8 @@
             </div>
             <div class="card-body">
                 <div id="unopened-mail">
-                    {% for e in unopened %}
-                        <span class="btn btn-outline-secondary">&nbsp;</span>
+                    {% for u in unopened %}
+                        <span class="btn btn-outline-secondary">{{ u.label }}</span>
                     {% endfor %}
                 </div>
             </div>

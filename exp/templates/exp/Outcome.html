@@ -13,7 +13,7 @@
 
 {% block content %}
     <div>
-        <p>Round {{ random_round }} was selected. In which you had the following envelopes remaining.</p>
+        <p>Round {{ envelope.round }} was selected. In which you had the following envelopes remaining.</p>
     </div>
     <div>
         <div class="card">
@@ -22,23 +22,27 @@
             </div>
             <div class="card-body">
                 <div id="unopened-mail">
-                    {% for e in unopened %}
-                        <span class="btn btn-outline-secondary">&nbsp;</span>
+                    {% for u in unopened %}
+                        {% if u.label == envelope.label %}
+                            <span class="envelope btn btn-secondary text-center">{{ envelope.label }}: {{ envelope.value }}%</span>
+                        {% else %}
+                            <span class="btn btn-outline-secondary">{{ u.label }}</span>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
     <div>
-        <p>Envelope {{ random_envelope_id }} was selected at random.</p>
+        <p>Envelope {{ envelope.label }} was selected at random and opened.</p>
         {% if probability_treatment %}
-        <p>The probability in the envelope was {{ envelope_value }}%.
+        <p>The probability in the envelope was <b>{{ envelope.value }}%</b>.
         </p>
             {% if outcome_payoff > 0 %}
-                <p>The number {{ r }} was drawn at random which is less than or equal to {{ envelope_value }}.
+                <p>The number {{ r }} was drawn at random which is less than or equal to {{ envelope.value }}.
                 <p><b>You received the prize of {{ outcome_payoff  }}</b>.</p>
             {% else %}
-                <p>The number {{ r }} was drawn at random which is greater than {{ envelope_value }}.
+                <p>The number {{ r }} was drawn at random which is greater than {{ envelope.value }}.
                 <p><b>You did not win the prize.</b></p>
             {% endif %}
         {% endif %}
