@@ -7,8 +7,13 @@
 
 {% block content %}
     <p>Entered buyout: {{ buyout }}. Computer offer: {{ offer }}.</p>
-    <p>Because the computer offered you {{ offer }}, which was less than your stated minimum buyout of {{ buyout }},
-        you will continue playing the game.</p>
+    {% if offer >= buyout %}
+        <p>Because the computer offered you {{ offer }}, which is greater than your stated minimum of {{ buyout }},
+            you exit the game with an earnings of {{ payoff }}.</p>
+    {% else %}
+        <p>Because the computer offered you {{ offer }}, which was less than your stated minimum of {{ buyout }},
+            you will continue playing the game.</p>
+    {% endif %}
 
     {% next_button %}
 {% endblock %}
