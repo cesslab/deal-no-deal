@@ -67,11 +67,11 @@ class EnterMinimumBuyout(Page):
         return buyout_max
 
     def before_next_page(self):
-        print("Envelope value = {}".format(self.participant.vars['values'][self.round_number-1]))
         self.player.envelope_value = self.participant.vars['values'][self.round_number-1]
+        print(f"Player buyout {self.player.buyout}")
         if self.player.buyout is not None and self.player.buyout > 0:
-            self.player.leave = True
             self.player.offer = random.randint(0, 100)
+            print(f"Computer offer {self.player.offer}")
             if self.player.offer >= self.player.buyout:
                 self.participant.vars["leave"] = True
                 self.player.payoff = self.player.offer
@@ -81,10 +81,11 @@ class EnterMinimumBuyout(Page):
 
 class BuyoutOutcome(Page):
     def is_displayed(self):
-        return self.player.buyout is not None and self.player.buyout > 0 and self.player.offer < self.player.buyout
+        return self.player.buyout is not None and self.player.buyout > 0
 
     def vars_for_template(self):
         return {
+            'payoff': self.player.payoff,
             'buyout': self.player.buyout,
             'offer': self.player.offer,
         }
@@ -92,7 +93,7 @@ class BuyoutOutcome(Page):
 
 class Outcome(Page):
     def is_displayed(self):
-        return self.round_number == Constants.num_rounds
+        return not self.participant.vars["leave"] and self.round_number == Constants.num_rounds
 
     def vars_for_template(self):
         payoff_envelope = self.participant.vars['payoff_envelope']
