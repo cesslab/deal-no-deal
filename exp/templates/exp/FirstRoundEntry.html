@@ -8,13 +8,9 @@
 {% endblock %}
 
 {% block title %}
-    Random Envelope Selection
 {% endblock %}
 
 {% block content %}
-    <div>
-        <p>Envelope <strong>{{ envelope.label }}</strong> was opened in this round, and it contained the probability <strong>{{ envelope.value }}%</strong>.</p>
-    </div>
     <div class="bag-container">
         <div class="card">
             <div class="card-header">
@@ -22,14 +18,6 @@
             </div>
             <div class="card-body">
                 <div id="opened-mail">
-                    {% for o in opened %}
-                        <div class="card">
-                            <span class="btn btn-outline-secondary">{{ o.label }}: {{ o.value }}%</span>
-                        </div>
-                    {% endfor %}
-                    <div class="card">
-                        <span class="envelope btn btn-secondary text-center">{{ envelope.label }}: {{ envelope.value }}%</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -41,13 +29,20 @@
             <div class="card-body">
                 <div id="unopened-mail">
                     {% for u in unopened %}
-                        <span class="btn btn-outline-secondary">{{ u.label }}</span>
+                        <span class="btn btn-outline-secondary">{{ u }}{{ value_type }}</span>
                     {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-    {% next_button %}
-{% endblock %}
 
+    <div id="bout" class="d-flex flex-column align-items-center">
+        <div class="p-2">
+            {% formfields %}
+        </div>
+        <div class="p-2">
+            {% next_button %}
+        </div>
+    </div>
+{% endblock %}
 

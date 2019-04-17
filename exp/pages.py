@@ -9,46 +9,23 @@ class Instructions(Page):
         return self.round_number == 1
 
 
-class EnvelopeSelection(Page):
+class FirstRoundEntry(Page):
     def is_displayed(self):
-        return not self.participant.vars["leave"]
+        return self.round_number == 1
 
-    def vars_for_template(self):
-        labels = self.participant.vars['envelope_labels']
-        unopened_labels = sorted(labels[self.round_number:])
-        opened_labels = labels[:self.round_number-1]
-        opened_values = self.participant.vars['values'][:self.round_number-1]
-
-        unopened_envelopes = []
-        opened_envelopes = []
-        for i in range(0, len(unopened_labels)):
-            unopened_envelopes.append({
-                'label': unopened_labels[i],
-            })
-
-        for i in range(0, len(opened_labels)):
-            opened_envelopes.append({
-                'label': opened_labels[i],
-                'value': opened_values[i]
-            })
-
-        envelope = {
-            'label': labels[self.round_number-1],
-            'value': self.participant.vars['values'][self.round_number-1]
-        }
-        return {
-            'unopened': unopened_envelopes,
-            'opened': opened_envelopes,
-            'envelope': envelope,
-        }
-
-
-class EnterMinimumBuyout(Page):
     form_model = 'player'
     form_fields = ['buyout']
 
-    def is_displayed(self):
-        return not self.round_number == Constants.num_rounds and not self.participant.vars["leave"]
+    def vars_for_template(self):
+        values = self.participant.vars['values'][:]
+
+        values.sort()
+
+        return {
+            'round': self.round_number,
+            'unopened': values,
+            'value_type': '%' if (self.session.config['probability_treatment']) else 'Points'
+        }
 
     def buyout_min(self):
         if 'buyout_min' in self.session.config:
@@ -67,27 +44,56 @@ class EnterMinimumBuyout(Page):
         return buyout_max
 
     def before_next_page(self):
-        print("Envelope value = {}".format(self.participant.vars['values'][self.round_number-1]))
-        self.player.envelope_value = self.participant.vars['values'][self.round_number-1]
-        if self.player.buyout is not None and self.player.buyout > 0:
-            self.player.leave = True
-            self.player.offer = random.randint(0, 100)
-            if self.player.offer >= self.player.buyout:
-                self.participant.vars["leave"] = True
-                self.player.payoff = self.player.offer
-        else:
-            self.player.buyout = 0
+        if self.round_number == self.player.participant.vars['random_round']:
+            self.player.participant.vars['buyout'] = self.player.buyout
 
 
-class BuyoutOutcome(Page):
+class RoundEntry(Page):
     def is_displayed(self):
-        return self.player.buyout is not None and self.player.buyout > 0 and self.player.offer < self.player.buyout
+        return self.round_number > 1
+
+    form_model = 'player'
+    form_fields = ['buyout']
 
     def vars_for_template(self):
-        return {
-            'buyout': self.player.buyout,
-            'offer': self.player.offer,
+        values = self.participant.vars['values']
+
+        envelope = {
+            'index': self.round_number - 2,
+            'value': values[self.round_number - 2]
         }
+
+        opened_values = values[:self.round_number - 2]
+        unopened_values = values[self.round_number - 2:]
+        unopened_values.sort()
+
+        return {
+            'round': self.round_number,
+            'unopened': unopened_values,
+            'opened': opened_values,
+            'envelope': envelope,
+            'value_type': '%' if (self.session.config['probability_treatment']) else 'Points'
+        }
+
+    def buyout_min(self):
+        if 'buyout_min' in self.session.config:
+            buyout_min = self.session.config['buyout_min']
+        else:
+            buyout_min = 0
+
+        return buyout_min
+
+    def buyout_max(self):
+        if 'buyout_max' in self.session.config:
+            buyout_max = self.session.config['buyout_max']
+        else:
+            buyout_max = 0
+
+        return buyout_max
+
+    def before_next_page(self):
+        if self.round_number == self.player.participant.vars['random_round']:
+            self.player.participant.vars['buyout'] = self.player.buyout
 
 
 class Outcome(Page):
@@ -95,29 +101,40 @@ class Outcome(Page):
         return self.round_number == Constants.num_rounds
 
     def vars_for_template(self):
-        payoff_envelope = self.participant.vars['payoff_envelope']
-        labels = self.participant.vars['envelope_labels']
-        unopened_labels = sorted(labels[payoff_envelope['round']:])
+        offer = self.participant.vars['random_offer']
+        random_round = self.participant.vars['random_round']
+        random_number = self.participant.vars['random_number']
+        random_envelope_value = self.participant.vars['random_envelope_value']
+        unopened_values = self.participant.vars['unopened_values']
+        buyout = self.participant.vars['buyout']
 
-        unopened_envelopes = []
-        for i in range(0, len(unopened_labels)):
-            unopened_envelopes.append({
-                'label': unopened_labels[i],
-            })
+        accept_offer = buyout < offer
+        won_prize = random_number <= random_envelope_value
 
         return {
-            'unopened': unopened_envelopes,
-            'envelope': payoff_envelope,
-            'probability_treatment': self.session.config['probability_treatment'],
-            'r': self.participant.vars['r'],
-            'outcome_payoff': self.participant.vars['outcome_payoff']
+            'random_round': random_round,
+            'unopened': unopened_values,
+            'envelope': random_envelope_value,
+            'prob_treatment': self.session.config['probability_treatment'],
+            'accept_offer': accept_offer,
+            'won_prize': won_prize,
+            'buyout': buyout,
+            'offer': offer,
+            'random_number': random_number,
+            'prize': self.session.config['prize'],
         }
+    
+    def before_next_page(self):
+        self.player.buyout = self.participant.vars['buyout']
+        self.player.random_offer = self.participant.vars['random_offer']
+        self.player.random_round = self.participant.vars['random_round']
+        self.player.random_envelope_value = self.participant.vars['random_envelope_value']
+        self.player.random_number = self.participant.vars['random_number']
 
 
 page_sequence = [
     Instructions,
-    EnvelopeSelection,
-    EnterMinimumBuyout,
-    BuyoutOutcome,
+    FirstRoundEntry,
+    RoundEntry,
     Outcome,
 ]

@@ -13,39 +13,45 @@
 
 {% block content %}
     <div>
-        <p>Round {{ envelope.round }} was selected. In which you had the following envelopes remaining.</p>
+    <p><b>Round {{ random_round }}</b> was randomly selected.</p>
     </div>
+    {% if accept_offer %}
     <div>
-        <div class="card">
-            <div class="card-header">
-                <h5 class="text-center">Envelopes Remaining</h5>
-            </div>
-            <div class="card-body">
-                <div id="unopened-mail">
-                    {% for u in unopened %}
-                        {% if u.label == envelope.label %}
-                            <span class="envelope btn btn-secondary text-center">{{ envelope.label }}: {{ envelope.value }}%</span>
-                        {% else %}
-                            <span class="btn btn-outline-secondary">{{ u.label }}</span>
-                        {% endif %}
-                    {% endfor %}
+            <p>Your stated minimum for round {{ random_round }} was {{ buyout }} which is
+                less than or equal to the computer's offer of {{ offer }}.</p>
+            <p>Because the computer's offer of {{ offer }} is greater than your stated minimum of {{ buyout }}
+            <b>you will receive {{ offer }} as your payoff</b>.
+    </div>
+    {% else %}
+        <div>
+            <p>Your stated minimum for <b>round {{ random_round }}</b> was <b>{{ buyout }}</b> which was <i>greater than</i>
+                the computer's offer of <b>{{ offer }}</b>. Because the computer's offer of <b>{{ offer }}</b> is <i>less than</i> your
+                stated minimum of <b>{{ buyout }}</b>, <b>you will play the game.</b></p>
+        </div>
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center">Envelopes Remaining</h5>
+                </div>
+                <div class="card-body">
+                    <div id="unopened-mail">
+                        {% for u in unopened %}
+                            <span class="btn btn-outline-secondary">{{ u }}</span>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-        <p>Envelope {{ envelope.label }} was selected at random and opened.</p>
-        {% if probability_treatment %}
-        <p>The probability in the envelope was <b>{{ envelope.value }}%</b>.
-        </p>
-            {% if outcome_payoff > 0 %}
-                <p>The number {{ r }} was drawn at random which is less than or equal to {{ envelope.value }}.
-                <p><b>You received the prize of {{ outcome_payoff  }}</b>.</p>
-            {% else %}
-                <p>The number {{ r }} was drawn at random which is greater than {{ envelope.value }}.
-                <p><b>You did not win the prize.</b></p>
-            {% endif %}
+        <div>
+        <p>Of the remaining unselected envelopes, the envelope with a value of <b>{{ envelope }}%</b> was selected.</p>
+        <p>The computer selected at random the number <b>{{ random_number }}</b>.</p>
+        {% if won_prize %}
+            <p>Because <b>{{ random_number }}</b> is <i>less than or equal</i> to <b>{{ envelope }}</b>,
+                <b>you will receive the prize amount of {{ prize }}.</b></p>
+        {% else %}
+            <p>Because {{ random_number }} is greater than {{ envelope }}, <b>you will not receive the prize.</b></p>
         {% endif %}
-    </div>
+        </div>
+    {% endif %}
     {% next_button %}
 {% endblock %}

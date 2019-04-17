@@ -1,0 +1,83 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block app_styles %}
+    <link rel="stylesheet" href="{% static 'exp/envelope.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+    <div class="bag-container">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Envelopes Opened</h5>
+            </div>
+            <div class="card-body">
+                <div id="opened-mail">
+                    {% for o in opened %}
+                        <div class="card">
+                            <span class="btn btn-outline-secondary">{{ o }}{{ value_type }}</span>
+                        </div>
+                    {% endfor %}
+                    {% if round > 1 %}
+                        <div id="envelope" class="card fade_slow">
+                            <span class="envelope btn btn-secondary text-center">{{ envelope.value }}{{ value_type }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="text-center">Envelopes Remaining</h5>
+            </div>
+            <div class="card-body">
+                <div id="unopened-mail">
+                    {% for u in unopened %}
+                        <span  {% if u == envelope.value %}id="next"{% endif %} class="btn btn-outline-secondary">{{ u }}{{ value_type }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if round > 1 %}
+    <div class="d-flex justify-content-around">
+        <button id="envelopebtn" type="button" class="btn btn-success" onclick="displayEnvelope()">Draw Envelope</button>
+    </div>
+    {% endif %}
+    <div id="bout" class="fade_fast d-flex flex-column align-items-center">
+        {% if round > 1 %}
+        <div class="p-2">
+            {% formfields %}
+        </div>
+        {% endif %}
+        <div class="p-2">
+            {% next_button %}
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        function displayEnvelope() {
+            let ebtn = document.getElementById("envelopebtn");
+            ebtn.classList.add('d-none');
+
+            let envelope = document.getElementById("envelope");
+            envelope.classList.add('in');
+
+            let closed = document.getElementById("next");
+            closed.classList.add('d-none');
+
+            let bout = document.getElementById("bout");
+            bout.classList.add('in');
+        }
+    </script>
+{% endblock %}
+
+
