@@ -42,7 +42,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     buyout = models.IntegerField(blank=False)
-    random_offer = models.IntegerField(default=-1)
-    random_round = models.IntegerField(default=-1)
-    random_envelope_value = models.IntegerField(default=-1)
-    random_number = models.IntegerField(default=-1)
+    random_offer = models.IntegerField()
+    random_round = models.IntegerField()
+    random_envelope_value = models.IntegerField()
+    random_number = models.IntegerField()
