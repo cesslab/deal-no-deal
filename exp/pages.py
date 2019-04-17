@@ -98,7 +98,7 @@ class RoundEntry(Page):
 
 class Outcome(Page):
     def is_displayed(self):
-        return self.round_number == Constants.num_rounds
+        return not self.participant.vars["leave"] and self.round_number == Constants.num_rounds
 
     def vars_for_template(self):
         offer = self.participant.vars['random_offer']
