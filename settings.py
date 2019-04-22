@@ -19,6 +19,7 @@ SESSION_CONFIGS = [
        'app_sequence': ['exp'],
        'probability_treatment': True,
        'prize': 100,
+       'envelope_0': 0,
        'envelope_1': 90,
        'envelope_2': 10,
        'envelope_3': 80,

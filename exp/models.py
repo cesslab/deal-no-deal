@@ -15,15 +15,15 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'exp'
     players_per_group = None
-    num_rounds = 10
-    num_envelopes = 10
+    num_rounds = 11
+    num_envelopes = 11
 
 
 class Subsession(BaseSubsession):
     def creating_session(self):
         if self.round_number == 1:
             for player in self.get_players():
-                player.participant.vars['values'] = [self.session.config[f"envelope_{i}"] for i in range(1, Constants.num_envelopes + 1)]
+                player.participant.vars['values'] = [self.session.config[f"envelope_{i}"] for i in range(Constants.num_envelopes)]
                 player.participant.vars['random_round'] = random.randint(1, 10)
 
                 player.participant.vars['random_offer'] = random.randint(0, 100)
