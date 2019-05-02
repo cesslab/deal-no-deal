@@ -46,18 +46,17 @@
         </div>
     </div>
 
-    {% if round > 1 %}
     <div class="d-flex justify-content-around">
         <button id="envelopebtn" type="button" class="btn btn-success" onclick="displayEnvelope()">Draw Envelope</button>
     </div>
-    {% endif %}
     <div id="bout" class="fade_fast d-flex flex-column align-items-center">
-        {% if round > 1 %}
-        <div class="p-2">
+        <div>
+            <p>Enter the minimum amount you would be willing to accept in order not to participate in this lottery.</p>
+        </div>
+        <div class="d-flex justify-content-center">
             {% formfields %}
         </div>
-        {% endif %}
-        <div class="p-2">
+        <div>
             {% next_button %}
         </div>
     </div>
