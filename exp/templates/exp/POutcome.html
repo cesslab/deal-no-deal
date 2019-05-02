@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <div id="unopened-mail">
                         {% for u in unopened %}
-                            <span class="btn btn-outline-secondary">{{ u }}</span>
+                            <span class="btn {% if u == envelope %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ u }}%</span>
                         {% endfor %}
                     </div>
                 </div>
@@ -44,13 +44,17 @@
         </div>
         <div>
         <p>Of the remaining unselected envelopes, the envelope with a value of <b>{{ envelope }}%</b> was selected.</p>
-        <p>The computer selected at random the number <b>{{ random_number }}</b>.</p>
+        <p>The computer randomly selected the number <b>{{ random_number }}</b>.</p>
         {% if won_prize %}
-            <p>Because <b>{{ random_number }}</b> is <i>less than or equal</i> to <b>{{ envelope }}</b>,
-                <b>you will receive the prize amount of {{ prize }}.</b></p>
+            <p>Because <b>{{ random_number }}</b> is
+                <i>{% if random_number < envelope %}less than{% else %}equal to{% endif %}</i> <b>{{ envelope }}</b>,
+                <b>you will receive a prize of {{ prize }}.</b></p>
         {% else %}
             <p>Because {{ random_number }} is greater than {{ envelope }}, <b>you will not receive the prize.</b></p>
         {% endif %}
+        </div>
+        <div>
+            <p>Your final converted payoff in dollars, including a show-up fee of <b>{{ showup_fee }}</b>, is <b>{{ final_payoff }}</b></p>
         </div>
     {% endif %}
     {% next_button %}
