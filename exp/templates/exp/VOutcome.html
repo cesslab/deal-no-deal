@@ -1,0 +1,53 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block app_styles %}
+    <link rel="stylesheet" href="{% static 'exp/envelope.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+    Outcome
+{% endblock %}
+
+{% block content %}
+    <div>
+    <p><b>Round {{ random_round }}</b> was randomly selected.</p>
+    </div>
+    {% if accept_offer %}
+    <div>
+            <p>Your stated minimum for round {{ random_round }} was {{ buyout }} which is
+                less than or equal to the computer's offer of {{ offer }}.</p>
+            <p>Because the computer's offer of {{ offer }} is greater than your stated minimum of {{ buyout }}
+            <b>you will receive {{ offer }} as your payoff</b>.
+    </div>
+    {% else %}
+        <div>
+            <p>Your stated minimum for <b>round {{ random_round }}</b> was <b>{{ buyout }}</b> which was <i>greater than</i>
+                the computer's offer of <b>{{ offer }}</b>. Because the computer's offer of <b>{{ offer }}</b> is <i>less than</i> your
+                stated minimum of <b>{{ buyout }}</b>, your payoff will be determined by randomly drawing one envelope
+                from the remaining in <b>round {{ random_round }}</b>.</p>
+        </div>
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-center">Envelopes Remaining</h5>
+                </div>
+                <div class="card-body">
+                    <div id="unopened-mail">
+                        {% for u in unopened %}
+                            <span class="btn {% if u == envelope %}btn-secondary{% else %}btn-outline-secondary{% endif %}">{{ u }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+        <p>The envelope containing the value <b>{{ envelope }}</b> was randomly selected.</p>
+        <p>Your payoff will be <b>{{ payoff }}</b>.</p>
+        <p>Your final converted payoff in dollars, including a show-up fee of <b>{{ showup_fee }}</b>, is <b>{{ final_payoff }}</b></p>
+        </div>
+    {% endif %}
+    {% next_button %}
+{% endblock %}
