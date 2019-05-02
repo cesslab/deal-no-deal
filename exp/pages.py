@@ -161,7 +161,7 @@ class POutcome(Page):
         self.player.random_envelope_value = self.participant.vars['random_envelope_value']
         self.player.random_number = self.participant.vars['random_number']
         self.player.won_prize = random_number <= random_envelope_value
-        self.player.offer_accepted = buyout <= offer
+        self.player.buyout_accepted = buyout <= offer
 
 
 class VOutcome(Page):
@@ -219,7 +219,7 @@ class VOutcome(Page):
         self.player.random_round = self.participant.vars['random_round']
         self.player.random_envelope_value = self.participant.vars['random_envelope_value']
         self.player.random_number = self.participant.vars['random_number']
-        self.player.offer_accepted = buyout <= offer
+        self.player.buyout_accepted = buyout <= offer
 
 
 page_sequence = [

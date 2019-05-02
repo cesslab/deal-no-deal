@@ -46,5 +46,5 @@ class Player(BasePlayer):
     random_round = models.IntegerField()
     random_envelope_value = models.IntegerField()
     random_number = models.IntegerField()
-    offer_accepted = models.BooleanField()
+    buyout_accepted = models.BooleanField()
     won_prize = models.BooleanField()
