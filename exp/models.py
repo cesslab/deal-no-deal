@@ -41,8 +41,10 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    buyout = models.IntegerField(blank=False)
+    buyout = models.IntegerField(blank=False, label='Enter your minimum value')
     random_offer = models.IntegerField()
     random_round = models.IntegerField()
     random_envelope_value = models.IntegerField()
     random_number = models.IntegerField()
+    offer_accepted = models.BooleanField()
+    won_prize = models.BooleanField()
