@@ -47,3 +47,10 @@
 .fade_fast.in {
     opacity: 1;
 }
+
+
+.field-buyout {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
