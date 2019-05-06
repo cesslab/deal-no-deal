@@ -35,6 +35,12 @@ SESSION_CONFIGS = [
     },
 ]
 
+ROOMS = [
+    {
+        'name': 'cess_lab',
+        'display_name': 'CESS Lab',
+    },
+]
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
