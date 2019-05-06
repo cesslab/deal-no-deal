@@ -35,13 +35,6 @@ SESSION_CONFIGS = [
     },
 ]
 
-ROOMS = [
-    {
-        'name': 'cess_lab',
-        'display_name': 'CESS Lab',
-    },
-]
-
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
 LANGUAGE_CODE = 'en'
@@ -50,7 +43,12 @@ LANGUAGE_CODE = 'en'
 REAL_WORLD_CURRENCY_CODE = 'USD'
 USE_POINTS = True
 
-ROOMS = []
+ROOMS = [
+    {
+        'name': 'cess_lab',
+        'display_name': 'CESS Lab',
+    },
+]
 
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
