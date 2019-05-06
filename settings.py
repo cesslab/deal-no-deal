@@ -45,8 +45,12 @@ USE_POINTS = True
 
 ROOMS = [
     {
-        'name': 'cess_lab',
-        'display_name': 'CESS Lab',
+        'name': 'cess_lab_1',
+        'display_name': 'CESS Lab 1',
+    },
+    {
+        'name': 'cess_lab_2',
+        'display_name': 'CESS Lab 2',
     },
 ]
 
