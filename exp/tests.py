@@ -2,9 +2,21 @@ from otree.api import Currency as c, currency_range
 from . import pages
 from ._builtin import Bot
 from .models import Constants
+import random
 
 
 class PlayerBot(Bot):
-
     def play_round(self):
-        pass
+        if self.round_number == 1:
+            yield(pages.Instructions)
+
+        if self.round_number == 1:
+            yield(pages.FirstRoundEntry, {'buyout': random.uniform(0, 100)})
+        else:
+            yield(pages.RoundEntry, {'buyout': random.uniform(0, 100)})
+            if self.round_number == Constants.num_rounds:
+                if self.player.session.config['probability_treatment']:
+                    yield(pages.POutcome)
+                else:
+                    yield(pages.VOutcome)
+
