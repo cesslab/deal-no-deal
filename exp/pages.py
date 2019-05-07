@@ -112,7 +112,7 @@ class POutcome(Page):
         won_prize = random_number <= random_envelope_value
 
         if accept_offer:
-            payoff = c(offer)
+            payoff = c(offer).to_real_world_currency(self.session)
         else:
             # win prize
             if won_prize:
@@ -146,12 +146,12 @@ class POutcome(Page):
 
         # buyout offer accepted
         if buyout <= offer:
-            self.player.payoff = int(offer)
+            self.player.payoff = c(offer)
         # buyout offer rejected
         else:
             # win prize
             if random_number <= random_envelope_value:
-                self.player.payoff = int(self.session.config['prize'])
+                self.player.payoff = c(self.session.config['prize'])
             else:
                 self.player.payoff = 0
 
@@ -179,10 +179,10 @@ class VOutcome(Page):
         accept_offer = buyout < offer
         # buyout offer accepted
         if buyout <= offer:
-            payoff = offer
+            payoff = c(offer)
         # buyout offer rejected
         else:
-            payoff = random_envelope_value
+            payoff = c(random_envelope_value)
 
         showup_fee = self.session.config['participation_fee']
         final_payoff = payoff.to_real_world_currency(self.session) + showup_fee
